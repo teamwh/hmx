@@ -7,6 +7,7 @@ import java.util.Date;
 public class HmxCategory{
     private Integer categoryId;
     private String categoryName;
+    private Integer categoryType;
     private Integer sort;
     private Integer isClose;
     private Date createTime;
@@ -19,10 +20,13 @@ public class HmxCategory{
 		super();
 	}
 
-    public HmxCategory(Integer categoryId, String categoryName, Integer sort, Integer isClose, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
+	
+    public HmxCategory(Integer categoryId, String categoryName, Integer categoryType, Integer sort, Integer isClose,
+			Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
+		this.categoryType = categoryType;
 		this.sort = sort;
 		this.isClose = isClose;
 		this.createTime = createTime;
@@ -31,8 +35,19 @@ public class HmxCategory{
 		this.version = version;
 		this.createid = createid;
 	}
-	
-    public Integer getCategoryId() {
+
+
+	public Integer getCategoryType() {
+		return categoryType;
+	}
+
+
+	public void setCategoryType(Integer categoryType) {
+		this.categoryType = categoryType;
+	}
+
+
+	public Integer getCategoryId() {
 		return categoryId;
 	}
 	
