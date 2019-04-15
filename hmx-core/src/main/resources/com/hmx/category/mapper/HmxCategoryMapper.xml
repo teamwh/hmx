@@ -275,7 +275,7 @@ create_time = #{createTime,jdbcType=TIMESTAMP},
 new_time = #{newTime,jdbcType=TIMESTAMP},
 state = #{state,jdbcType=INTEGER},
 version = #{version,jdbcType=INTEGER},
-createid = #{createid,jdbcType=INTEGER}
+createid = #{createid,jdbcType=INTEGER},
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
   

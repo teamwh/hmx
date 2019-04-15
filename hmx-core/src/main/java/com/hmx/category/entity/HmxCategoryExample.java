@@ -847,7 +847,9 @@ public class HmxCategoryExample{
             addCriterion("createid not between", value1, value2, "createid");
             return (Criteria) this;
         }
-        
+
+
+
     	
     }
     

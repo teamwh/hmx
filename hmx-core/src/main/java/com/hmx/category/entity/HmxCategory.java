@@ -34,18 +34,8 @@ public class HmxCategory{
 		this.state = state;
 		this.version = version;
 		this.createid = createid;
-	}
-
-
-	public Integer getCategoryType() {
-		return categoryType;
-	}
-
-
-	public void setCategoryType(Integer categoryType) {
 		this.categoryType = categoryType;
 	}
-
 
 	public Integer getCategoryId() {
 		return categoryId;
@@ -118,5 +108,12 @@ public class HmxCategory{
 	public void setCreateid(Integer createid){
 		this.createid = createid;
 	}
-	
+
+	public Integer getCategoryType() {
+		return categoryType;
+	}
+
+	public void setCategoryType(Integer categoryType) {
+		this.categoryType = categoryType;
+	}
 }
