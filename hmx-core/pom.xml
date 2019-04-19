@@ -118,6 +118,12 @@
 			    <artifactId>aliyun-java-vod-upload</artifactId>
 				<version>1.4.6</version>
 	  		</dependency>
+	  		
+	  		<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+			</dependency>
+			
 		  </dependencies>
 		  <build>
 			<finalName>hmx-core</finalName>
