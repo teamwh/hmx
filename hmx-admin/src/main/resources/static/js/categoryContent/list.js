@@ -254,8 +254,8 @@ function getParameter() {
         formFile.append("categoryContentId", id);
     }
     formFile.append("categoryTitle", $("#title").val());
-    formFile.append("contentType", $("#type").val());
-    formFile.append("categoryContent", $("#content").text());
+    formFile.append("categoryId", $("#type").val());
+    formFile.append("categoryContent", editorValue.getValue());
 
     return formFile;
 

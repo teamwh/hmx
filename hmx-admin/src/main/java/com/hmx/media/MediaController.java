@@ -25,8 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Decoder;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 
@@ -135,9 +140,16 @@ public class MediaController {
     }
 
     @RequestMapping("/upload/video")
-    public Result<Object> uploadVideo(MultipartFile file, String title, String duration, Integer contentType, String ratio) throws IOException {
+    public Result<Object> uploadVideo(@RequestParam("file")String file, String title, String duration, Integer contentType, String ratio) throws IOException {
         logger.info("get in upload video controller______________________");
         Result<Object> result = new Result<>();
+        BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+        byte[] bytes1 = decoder.decodeBuffer(file);
+        InputStream in = new ByteArrayInputStream(bytes1);
+//        OutputStream out = new FileOutputStream("/Users/ouhiroshi/myrich/1.mp4");
+//        out.write(bytes1);
+//        out.flush();
+//        out.close();
         //保存进move表中
         HmxMovie hmxMovie = new HmxMovie();
         hmxMovie.setVideoStatus(2);
@@ -153,7 +165,7 @@ public class MediaController {
         hmxCategoryContent.setMovieId(hmxMovie.getMovieId());
         hmxCategoryContentService.update(hmxCategoryContent);
         logger.info("start async______________________");
-        uploadMovieAsync.uploadVideoAsync(file,title,hmxMovie.getMovieId());
+        uploadMovieAsync.uploadVideoAsync(in,title,hmxMovie.getMovieId());
         //返回成功
         result.setMsg("成功");
         result.setStatus(10000);

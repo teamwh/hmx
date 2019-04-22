@@ -13,8 +13,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -35,14 +37,15 @@ public class UploadMovieAsync {
     private HmxMovieService hmxMovieService;
 
     @Async(value = "taskExecutorWbswryxx")
-    public void uploadVideoAsync(MultipartFile file, String title, Integer movieId)  {
+    public void uploadVideoAsync(InputStream in, String title, Integer movieId)  {
         String videoId = null;
         String url = null;
         logger.info("start uploadVideoAsync___________________________________");
         try{
             //先上传video
             logger.info("start hmxUploadVideo___________________________________");
-            Map<String,Object> map = uploadVideoDemo.hmxUploadVideo(file.getInputStream(), file.getOriginalFilename(),
+//            InputStream in = file.getInputStream();
+            Map<String,Object> map = uploadVideoDemo.hmxUploadVideo(in, UUID.randomUUID().toString() + ".mp4",
                     title.trim());
             if(map != null && !map.get("videoId").equals("")){
                 videoId = (String) map.get("videoId");

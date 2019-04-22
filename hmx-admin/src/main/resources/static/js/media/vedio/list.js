@@ -31,33 +31,7 @@ function cleaarPath(){
 function uploadVideo(){
     var para = getUploadParameter();
     if (para != null) {
-        $.ajax({
-            url: "/media/upload/video",
-            data: para,
-            type: "Post",
-            dataType: "json",
-            cache: false,//上传文件无需缓存
-            processData: false,//用于对data参数进行序列化处理 这里必须false
-            contentType: false, //必须
-            /*xhr:function(){//暂时先不用，进度条
-                var xhr = $.ajaxSettings.xhr();
-                if(onprogress && xhr.upload) {
-                    xhr.upload.addEventListener("progress" , onprogress, false);
-                    return xhr;
-                }
-            },*/
-            success: function (result) {
-                if (result.status == 10000) {
-                    $.fn.messageBox('success', '视频正在处理，请稍后在列表中刷新查看处理状态！', function () {
-                        $("#addModal").modal('hide');  //手动关闭
-                        searchList()
-                    });
-                } else {
-                    $.fn.messageBox('error', '操作失败！', function () {
-                    });
-                }
-            },
-        });
+
 
         //方法为上传的进度条
         // function onprogress(evt){
@@ -208,16 +182,56 @@ function getUploadParameter() {
             return;
         }
     }
-    var house = parseInt((document.getElementById("video0").duration)/3600);
-    var min = parseInt((document.getElementById("video0").duration%3600)/60);
-    var secd = Math.ceil(document.getElementById("video0").duration%60);
-    var time = house + "时" + min + "分" + secd +"秒";
-    formFile.append("title", $("#title").val());
-    formFile.append("duration", time);
-    formFile.append("file", fileObj); //加入文件对象
-    formFile.append("contentType", $("#contentType").val());
-    formFile.append("ratio", $("#ratio").val());
-    return formFile;
+    var binaryFile;
+    var reader = new FileReader();
+
+    reader.readAsDataURL(fileObj);
+    // reader.readAsArrayBuffer(fileObj);
+    reader.onload = function(evt){
+        // binaryFile = file;
+        // console.log(binaryFile);
+        var base64 = evt.target.result + "";
+        console.log(base64);
+        var base64s = base64.split(",");
+        console.log(base64s[0]);
+        // var blob = new Blob([reader.result]);
+        var house = parseInt((document.getElementById("video0").duration)/3600);
+        var min = parseInt((document.getElementById("video0").duration%3600)/60);
+        var secd = Math.ceil(document.getElementById("video0").duration%60);
+        var time = house + "时" + min + "分" + secd +"秒";
+        formFile.append("title", $("#title").val());
+        formFile.append("duration", time);
+        formFile.append("file", base64s[1]); //加入文件对象
+        formFile.append("contentType", $("#contentType").val());
+        formFile.append("ratio", $("#ratio").val());
+        $.ajax({
+            url: "/media/upload/video",
+            data: formFile,
+            type: "Post",
+            dataType: "json",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false, //必须
+            /*xhr:function(){//暂时先不用，进度条
+                var xhr = $.ajaxSettings.xhr();
+                if(onprogress && xhr.upload) {
+                    xhr.upload.addEventListener("progress" , onprogress, false);
+                    return xhr;
+                }
+            },*/
+            success: function (result) {
+                if (result.status == 10000) {
+                    $.fn.messageBox('success', '视频正在处理，请稍后在列表中刷新查看处理状态！', function () {
+                        $("#addModal").modal('hide');  //手动关闭
+                        searchList()
+                    });
+                } else {
+                    $.fn.messageBox('error', '操作失败！', function () {
+                    });
+                }
+            },
+        });
+    };
 }
 
 //条件检查
