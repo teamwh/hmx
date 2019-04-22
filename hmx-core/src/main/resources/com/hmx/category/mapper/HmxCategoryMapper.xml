@@ -5,6 +5,7 @@
   <resultMap id="BaseResultMap" type="com.hmx.category.entity.HmxCategory" >
     <id column="category_id" property="categoryId" jdbcType="INTEGER" />
   	<result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+  	<result column="category_type" property="categoryType" jdbcType="INTEGER" />
   	<result column="sort" property="sort" jdbcType="INTEGER" />
   	<result column="is_close" property="isClose" jdbcType="INTEGER" />
   	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -12,7 +13,6 @@
   	<result column="state" property="state" jdbcType="INTEGER" />
   	<result column="version" property="version" jdbcType="INTEGER" />
   	<result column="createid" property="createid" jdbcType="INTEGER" />
-    <result column="category_type" property="categoryType" jdbcType="INTEGER" />
   </resultMap>
   
   <sql id="Example_Where_Clause" >
@@ -75,7 +75,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    category_id,category_name,sort,is_close,create_time,new_time,state,version,createid,category_type
+    category_id,category_name,category_type,sort,is_close,create_time,new_time,state,version,createid
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hmx.category.entity.HmxCategoryExample" >
@@ -126,8 +126,8 @@
   
   
   <insert id="insert" parameterType="com.hmx.category.entity.HmxCategory" keyProperty="categoryId" useGeneratedKeys="true">
-    insert into hmx_category  (category_id,category_name,sort,is_close,create_time,new_time,state,version,createid)
-    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{isClose,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER}, #{categoryType,jdbcType=INTEGER})
+    insert into hmx_category  (category_id,category_name,category_type,sort,is_close,create_time,new_time,state,version,createid)
+    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{categoryType,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{isClose,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER})
   </insert>
   
   
@@ -139,6 +139,9 @@
       </if>
       <if test="categoryName != null" >
         category_name,
+      </if>
+      <if test="categoryType != null" >
+        category_type,
       </if>
       <if test="sort != null" >
         sort,
@@ -161,9 +164,6 @@
       <if test="createid != null" >
         createid,
       </if>
-        <if test="categoryType != null" >
-            category_type,
-        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="categoryId != null" >
@@ -171,6 +171,9 @@
       </if>
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryType != null" >
+        #{categoryType,jdbcType=INTEGER},
       </if>
       <if test="sort != null" >
         #{sort,jdbcType=INTEGER},
@@ -193,9 +196,6 @@
       <if test="createid != null" >
         #{createid,jdbcType=INTEGER},
       </if>
-        <if test="categoryType != null" >
-            #{categoryType,jdbcType=INTEGER},
-        </if>
     </trim>
   </insert>
   
@@ -203,14 +203,14 @@
     update hmx_category 
     set category_id = #{categoryId,jdbcType=INTEGER},
 category_name = #{categoryName,jdbcType=VARCHAR},
+category_type = #{categoryType,jdbcType=INTEGER},
 sort = #{sort,jdbcType=INTEGER},
 is_close = #{isClose,jdbcType=INTEGER},
 create_time = #{createTime,jdbcType=TIMESTAMP},
 new_time = #{newTime,jdbcType=TIMESTAMP},
 state = #{state,jdbcType=INTEGER},
 version = #{version,jdbcType=INTEGER},
-createid = #{createid,jdbcType=INTEGER},
-category_type = #{categoryType,jdbcType=INTEGER}
+createid = #{createid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -231,6 +231,9 @@ category_type = #{categoryType,jdbcType=INTEGER}
       </if>
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR} ,
+      </if>
+       <if test="categoryType != null" >
+        category_type = #{categoryType,jdbcType=INTEGER},
       </if>
       <if test="sort != null" >
         sort = #{sort,jdbcType=INTEGER} ,
@@ -256,9 +259,6 @@ category_type = #{categoryType,jdbcType=INTEGER}
       <if test="createid != null" >
         createid = #{createid,jdbcType=INTEGER} ,
       </if>
-        <if test="categoryType != null" >
-            category_type = #{categoryType,jdbcType=INTEGER} ,
-        </if>
     </set >
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
@@ -268,6 +268,7 @@ category_type = #{categoryType,jdbcType=INTEGER}
     update hmx_category
     set category_id = #{categoryId,jdbcType=INTEGER},
 category_name = #{categoryName,jdbcType=VARCHAR},
+category_type = #{categoryType,jdbcType=INTEGER},
 sort = #{sort,jdbcType=INTEGER},
 is_close = #{isClose,jdbcType=INTEGER},
 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -275,13 +276,12 @@ new_time = #{newTime,jdbcType=TIMESTAMP},
 state = #{state,jdbcType=INTEGER},
 version = #{version,jdbcType=INTEGER},
 createid = #{createid,jdbcType=INTEGER},
-category_type = #{categoryType,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
   
    <!-- 首页分类查询  ↓-->
    <select id="selectCategoryAndContentList" resultMap="selectCategoryAndContentListResultMap">
-   select c.category_id,c.category_id as 'categoryId',
+   select c.category_id,c.category_id as 'categoryId',c.category_type as 'categoryType',
           c.category_name as 'categoryName',c.sort as 'sort' 
     from hmx_category c 
 	where c.is_close=0 and c.state=0 
@@ -331,7 +331,7 @@ category_type = #{categoryType,jdbcType=INTEGER}
    <select id="selectCategoryTable" resultType="Map">
    select category_id as 'categoryId',category_name as 'categoryName',
           sort as 'sort',is_close as 'isClose',create_time as 'createTime',
-          new_time as 'newTime',createid as 'createid' 
+          new_time as 'newTime',createid as 'createid',category_type as 'categoryType' 
     from hmx_category
 	<where>
 		<trim suffixOverrides="and">

@@ -124,6 +124,9 @@ import javax.servlet.http.HttpServletRequest;
   		if ( StringUtils.isEmpty( hmxCategoryDto.getCategoryName() ) ) {
 			where.andCategoryNameEqualTo( hmxCategoryDto.getCategoryName() );
 		}
+  		if ( hmxCategoryDto.getCategoryType() != null && hmxCategoryDto.getCategoryType() != 0 ) {
+			where.andCategoryTypeEqualTo( hmxCategoryDto.getCategoryType() );
+		}
   		if ( hmxCategoryDto.getSort() != null && hmxCategoryDto.getSort() != 0 ) {
 			where.andSortEqualTo( hmxCategoryDto.getSort() );
 		}
@@ -179,6 +182,9 @@ import javax.servlet.http.HttpServletRequest;
 		}
   		if ( !StringUtils.isEmpty( hmxCategoryDto.getCategoryName() ) ) {
 			where.andCategoryNameEqualTo( hmxCategoryDto.getCategoryName() );
+		}
+  		if ( hmxCategoryDto.getCategoryType() != null && hmxCategoryDto.getCategoryType() != 0 ) {
+			where.andCategoryTypeEqualTo( hmxCategoryDto.getCategoryType() );
 		}
   		if ( hmxCategoryDto.getSort() != null && hmxCategoryDto.getSort() != 0 ) {
 			where.andSortEqualTo( hmxCategoryDto.getSort() );

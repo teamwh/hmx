@@ -28,7 +28,7 @@
                 <select class="form-control" name="type" id="type">
                     <option value="">请选择</option>
                     <#list category as item>
-                        <option value="${item.categoryId!}" <#if hmxCategoryContent.contentType?? && hmxCategoryContent.contentType==item.categoryId>selected="selected"</#if>>${item.categoryName!}</option>
+                        <option value="${item.categoryId!}" <#if hmxCategoryContent.categoryId?? && hmxCategoryContent.categoryId==item.categoryId>selected="selected"</#if>>${item.categoryName!}</option>
                     </#list>
                 </select>
             </div>

@@ -14,7 +14,10 @@ import org.springframework.util.StringUtils;
 
 import com.hmx.category.service.HmxCategoryContentService;
 import com.hmx.utils.enums.DataState;
+import com.hmx.utils.result.Config;
 import com.hmx.utils.result.PageBean;
+import com.hmx.utils.result.ResultBean;
+import com.hmx.utils.upload.InitVodClients;
 import com.hmx.category.entity.HmxCategoryContent;
 import com.hmx.category.dto.HmxCategoryContentDto;
 import com.hmx.category.entity.HmxCategoryContentExample;
@@ -29,6 +32,8 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
  
  	@Autowired
 	private HmxCategoryContentMapper hmxCategoryContentMapper;
+ 	@Autowired
+	private InitVodClients initVodClients;
 	
 	
 	/**
@@ -334,11 +339,19 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
      */
     public Map<String,Object> selectContentInfoByContentId(Integer categoryContentId){
     	Map<String,Object> resultMap = hmxCategoryContentMapper.selectContentInfoByContentId(categoryContentId);
+    	resultMap.put("videoUrl", null);
     	if(resultMap != null){
     		HmxCategoryContent hmxCategoryContent = new HmxCategoryContent();
     		hmxCategoryContent.setCategoryContentId(categoryContentId);
     		hmxCategoryContent.setBrowseNum(Integer.parseInt(resultMap.get("browseNum").toString()));
     		update(hmxCategoryContent);
+    		if(resultMap.get("videoId") != null){
+    			Map<String,Object> resultUrl = initVodClients.getUrl(resultMap.get("videoId").toString());
+    			boolean flag = Boolean.parseBoolean(resultUrl.get("flag").toString());
+    			if(flag){
+    				resultMap.put("videoUrl", resultUrl.get("url"));
+    			}
+    		}
     	}
     	return resultMap;
     }
